@@ -18,7 +18,7 @@ export function NavItem({ icon, title, href }: NavItemProps) {
     <Link
       href={href}
       className={cn(
-        "bg-background block overflow-hidden rounded-lg pl-0 transition-all duration-200",
+        "bg-background block rounded-lg pl-0 transition-all duration-200",
         isActive &&
           "bg-[linear-gradient(to_right,var(--primary),transparent)] pl-0.5",
       )}

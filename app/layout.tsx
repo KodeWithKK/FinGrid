@@ -42,12 +42,15 @@ export default function RootLayout({
         suppressHydrationWarning
       >
         <RootProvider>
-          <div className="fixed top-0 left-0 h-screen w-64 border-r p-5">
+          <aside className="fixed top-0 left-0 h-screen w-64 border-r p-5">
             <div className="flex items-center gap-2">
               <IconBrand className="text-primary h-6" />
               <h3 className="text-lg font-semibold tracking-wider">FinGrid</h3>
-              <button type="button" className="ml-auto text-gray-500">
-                <PanelLeftClose className="h-6" />
+              <button
+                type="button"
+                className="ml-auto cursor-pointer text-gray-500"
+              >
+                <PanelLeftClose className="h-6" strokeWidth={1.5} />
               </button>
             </div>
 
@@ -70,9 +73,11 @@ export default function RootLayout({
                 href="/budget"
               />
             </div>
-          </div>
+          </aside>
 
-          <div className="pl-64">{children}</div>
+          <div className="pl-64">
+            <main className="p-6">{children}</main>
+          </div>
         </RootProvider>
       </body>
     </html>
