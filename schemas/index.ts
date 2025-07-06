@@ -1,6 +1,6 @@
 import * as z from "zod";
 
-export const addTransactionFormSchema = z.object({
+export const transactionFormschema = z.object({
   type: z.enum(["expense", "income"]),
   category: z.enum([
     "salary",
@@ -24,4 +24,4 @@ export const addTransactionFormSchema = z.object({
   description: z.string().optional(),
 });
 
-export type AddTransactionFormSchema = z.infer<typeof addTransactionFormSchema>;
+export type TransactionFormSchema = z.infer<typeof transactionFormschema>;

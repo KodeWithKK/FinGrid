@@ -1,9 +1,11 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useQueryClient } from "@tanstack/react-query";
 import { Wallet } from "lucide-react";
 import { useForm } from "react-hook-form";
+import { toast } from "sonner";
 
 import {
   FormCalendar,
@@ -11,12 +13,13 @@ import {
   FormSelect,
   FormTextArea,
 } from "@/components/form-fields";
+import { IconLoader } from "@/components/icons";
 import Modal from "@/components/modal";
 import { Button } from "@/components/ui/button";
 import { Transaction } from "@/database/schema";
 import { transactionCategories } from "@/lib/constants";
-import { addTransactionFormSchema } from "@/schemas";
-import { addTransaction } from "@/services/transactions";
+import { transactionFormschema } from "@/schemas";
+import { updateTransaction } from "@/services/transactions";
 
 interface UpdateTransactionFormProps {
   showModal: boolean;
@@ -29,6 +32,9 @@ function UpdateTransactionForm({
   onClose,
   transaction,
 }: UpdateTransactionFormProps) {
+  const queryClient = useQueryClient();
+  const [isUpdating, setIsUpdating] = useState(false);
+
   const {
     register,
     control,
@@ -36,21 +42,47 @@ function UpdateTransactionForm({
     handleSubmit,
     formState: { errors },
   } = useForm({
-    resolver: zodResolver(addTransactionFormSchema),
+    resolver: zodResolver(transactionFormschema),
     defaultValues: transaction,
   });
 
   useEffect(() => {
-    reset();
-  }, [showModal, reset]);
+    reset(transaction);
+  }, [showModal, reset, transaction]);
 
-  const onSubmit = handleSubmit(
+  const onUpdate = handleSubmit(
     async (data) => {
-      const insertedTransactionId = await addTransaction(data);
-      console.log(insertedTransactionId);
+      setIsUpdating(true);
+      const isUpdated = await updateTransaction(transaction._id, data);
+      setIsUpdating(false);
+
+      if (isUpdated) {
+        toast.success("Transaction updated successfully.");
+
+        queryClient.setQueryData<Transaction[]>(
+          ["transactions"],
+          (prevTransactions) => {
+            if (prevTransactions) {
+              return prevTransactions.map((trx) =>
+                trx._id === transaction._id
+                  ? {
+                      ...trx,
+                      ...data,
+                      updatedAt: new Date(),
+                    }
+                  : trx,
+              );
+            }
+            return prevTransactions;
+          },
+        );
+        onClose();
+      } else {
+        toast.error("Something went wrong while updating the transaction.");
+      }
     },
-    (error) => {
-      console.log(error);
+    () => {
+      toast.error("Something went wrong while updating the transaction.");
     },
   );
 
@@ -110,11 +142,18 @@ function UpdateTransactionForm({
           size="lg"
           className="w-full"
           onClick={onClose}
+          disabled={isUpdating}
         >
           Cancel
         </Button>
-        <Button size="lg" className="w-full" onClick={onSubmit}>
-          Update Transaction
+        <Button
+          size="lg"
+          className="w-full"
+          onClick={onUpdate}
+          disabled={isUpdating}
+        >
+          {isUpdating && <IconLoader className="h-5 animate-spin" />}
+          <span>{isUpdating ? "Updating..." : "Update Transaction"}</span>
         </Button>
       </div>
     </Modal>

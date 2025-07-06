@@ -9,3 +9,23 @@ export function IconBrand(props: IconProps) {
     </svg>
   );
 }
+
+export function IconLoader(props: IconProps) {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      strokeWidth={3}
+      fill="none"
+      stroke="currentColor"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      {...props}
+    >
+      <path d="M12 3c4.97 0 9 4.03 9 9"></path>
+      <path
+        strokeOpacity={0.3}
+        d="M12 3c4.97 0 9 4.03 9 9c0 4.97 -4.03 9 -9 9c-4.97 0 -9 -4.03 -9 -9c0 -4.97 4.03 -9 9 -9Z"
+      ></path>
+    </svg>
+  );
+}

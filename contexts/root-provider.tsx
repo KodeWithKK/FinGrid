@@ -15,7 +15,7 @@ function RootProvider({ children }: { children: React.ReactNode }) {
         disableTransitionOnChange
       >
         {children}
-        <Toaster position="top-center" />
+        <Toaster position="top-center" richColors={false} />
       </ThemeProvider>
     </ReactQueryProvider>
   );

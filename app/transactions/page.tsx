@@ -1,16 +1,18 @@
 "use client";
 
 import { useState } from "react";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { Plus, SquarePen, Trash2 } from "lucide-react";
 import { useForm } from "react-hook-form";
+import { toast } from "sonner";
 
 import { FormInput, FormSelect } from "@/components/form-fields";
+import { IconLoader } from "@/components/icons";
 import { Button } from "@/components/ui/button";
 import { Transaction } from "@/database/schema";
 import { transactionCategories } from "@/lib/constants";
 import { cn } from "@/lib/utils";
-import { getTransactions } from "@/services/transactions";
+import { deleteTransaction, getTransactions } from "@/services/transactions";
 
 import AddTransactionForm from "./add-transaction-form";
 import UpdateTransactionForm from "./update-transaction-form";
@@ -23,8 +25,6 @@ function TransitionsPage() {
     queryKey: ["transactions"],
     queryFn: () => getTransactions(),
   });
-
-  console.log(transactions);
 
   return (
     <>
@@ -88,7 +88,25 @@ function TransitionsPage() {
 }
 
 function TransactionItem({ transaction }: { transaction: Transaction }) {
+  const queryClient = useQueryClient();
   const [showEditModal, setShowEditModal] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
+
+  const onDelete = async () => {
+    setIsDeleting(true);
+    const isDeleted = await deleteTransaction(transaction._id);
+    setIsDeleting(false);
+
+    if (isDeleted) {
+      queryClient.setQueryData<Transaction[]>(["transactions"], (prev) => {
+        return prev ? prev.filter((t) => t._id !== transaction._id) : prev;
+      });
+
+      toast.success("Transaction deleted successfully.");
+    } else {
+      toast.error("Something went wrong while deleting transaction.");
+    }
+  };
 
   return (
     <>
@@ -100,7 +118,7 @@ function TransactionItem({ transaction }: { transaction: Transaction }) {
 
       <div
         key={transaction._id}
-        className="bg-muted/60 flex items-center gap-4 rounded-md px-3 py-2"
+        className="bg-popover flex items-center gap-4 rounded-md px-3 py-2"
       >
         <div className="flex-1 space-y-1">
           <p className="text-sm leading-none font-medium">
@@ -130,8 +148,16 @@ function TransactionItem({ transaction }: { transaction: Transaction }) {
           >
             <SquarePen className="h-4 w-4" />
           </Button>
-          <Button variant="ghost" className="p-3">
-            <Trash2 className="text-destructive h-4 w-4" />
+          <Button
+            variant="ghost"
+            className="p-3"
+            disabled={isDeleting}
+            onClick={onDelete}
+          >
+            {!isDeleting && <Trash2 className="text-destructive w-4" />}
+            {isDeleting && (
+              <IconLoader className="text-destructive w-5 animate-spin" />
+            )}
           </Button>
         </div>
       </div>

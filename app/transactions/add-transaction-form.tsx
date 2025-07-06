@@ -1,9 +1,11 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useQueryClient } from "@tanstack/react-query";
 import { Wallet } from "lucide-react";
 import { useForm } from "react-hook-form";
+import { toast } from "sonner";
 
 import {
   FormCalendar,
@@ -11,10 +13,12 @@ import {
   FormSelect,
   FormTextArea,
 } from "@/components/form-fields";
+import { IconLoader } from "@/components/icons";
 import Modal from "@/components/modal";
 import { Button } from "@/components/ui/button";
-import { transactionCategories } from "@/lib/constants";
-import { addTransactionFormSchema } from "@/schemas";
+import { Transaction } from "@/database/schema";
+import { testUserId, transactionCategories } from "@/lib/constants";
+import { transactionFormschema } from "@/schemas";
 import { addTransaction } from "@/services/transactions";
 
 interface AddTransactionFormProps {
@@ -23,6 +27,9 @@ interface AddTransactionFormProps {
 }
 
 function AddTransactionForm({ showModal, onClose }: AddTransactionFormProps) {
+  const queryClient = useQueryClient();
+  const [isAdding, setIsAdding] = useState(false);
+
   const {
     register,
     control,
@@ -30,7 +37,7 @@ function AddTransactionForm({ showModal, onClose }: AddTransactionFormProps) {
     handleSubmit,
     formState: { errors },
   } = useForm({
-    resolver: zodResolver(addTransactionFormSchema),
+    resolver: zodResolver(transactionFormschema),
     defaultValues: {
       type: "income",
       category: "salary",
@@ -44,11 +51,37 @@ function AddTransactionForm({ showModal, onClose }: AddTransactionFormProps) {
 
   const onSubmit = handleSubmit(
     async (data) => {
+      setIsAdding(true);
       const insertedTransactionId = await addTransaction(data);
-      console.log(insertedTransactionId);
+      setIsAdding(false);
+
+      if (insertedTransactionId) {
+        toast.success("Transaction added successfully.");
+
+        queryClient.setQueryData<Transaction[]>(
+          ["transactions"],
+          (prevTransactions) => {
+            if (prevTransactions) {
+              return [
+                {
+                  ...data,
+                  _id: insertedTransactionId,
+                  updatedAt: new Date(),
+                  userId: testUserId,
+                },
+                ...prevTransactions,
+              ];
+            }
+          },
+        );
+
+        onClose();
+      } else {
+        toast.error("Something went wrong while adding the transaction.");
+      }
     },
-    (error) => {
-      console.log(error);
+    () => {
+      toast.error("Something went wrong while adding the transaction.");
     },
   );
 
@@ -108,11 +141,18 @@ function AddTransactionForm({ showModal, onClose }: AddTransactionFormProps) {
           size="lg"
           className="w-full"
           onClick={onClose}
+          disabled={isAdding}
         >
           Cancel
         </Button>
-        <Button size="lg" className="w-full" onClick={onSubmit}>
-          Add Transaction
+        <Button
+          size="lg"
+          className="w-full space-x-2"
+          onClick={onSubmit}
+          disabled={isAdding}
+        >
+          {isAdding && <IconLoader className="h-5 animate-spin" />}
+          <span>{isAdding ? "Adding..." : "Add Transaction"}</span>
         </Button>
       </div>
     </Modal>
