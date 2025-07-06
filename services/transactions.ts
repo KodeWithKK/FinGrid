@@ -45,7 +45,10 @@ export async function updateTransaction(
     const transactions = await dbCollections.transactions();
     const { data, success } = transactionFormschema.safeParse(transaction);
     if (!success) return false;
-    await transactions.updateOne({ _id: new ObjectId(id) }, { $set: data });
+    await transactions.updateOne(
+      { _id: new ObjectId(id) },
+      { $set: { ...data, updatedAt: new Date() } },
+    );
     return true;
   } catch {
     return false;
