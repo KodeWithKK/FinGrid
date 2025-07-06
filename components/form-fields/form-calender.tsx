@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { ChevronDownIcon } from "lucide-react";
+import { Control, FieldValues, Path, useController } from "react-hook-form";
 
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
@@ -11,33 +12,52 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 
-export default function Calendar22() {
+interface FormCalendarProps<T extends FieldValues> {
+  label?: string;
+  control: Control<T>;
+  registerName: Path<T>;
+}
+
+export function FormCalendar<T extends FieldValues>({
+  label,
+  control,
+  registerName,
+}: FormCalendarProps<T>) {
   const [open, setOpen] = useState(false);
-  const [date, setDate] = useState<Date | undefined>(undefined);
+
+  const {
+    field: { value, onChange },
+    fieldState: { error },
+  } = useController({ control, name: registerName });
 
   return (
-    <div className="flex flex-col gap-1">
-      <label className="block text-sm font-medium">Date</label>
+    <div className="w-full space-y-1">
+      {label && <label className="block text-sm font-medium">{label}</label>}
       <Popover open={open} onOpenChange={setOpen}>
         <PopoverTrigger asChild>
           <Button
             variant="outline"
             className="w-full justify-between font-normal"
           >
-            {date ? date.toLocaleDateString() : "Select date"}
+            {value ? value.toLocaleDateString() : "Select date"}
             <ChevronDownIcon className="text-muted-foreground h-4" />
           </Button>
         </PopoverTrigger>
+
+        {error?.message && (
+          <p className="text-sm text-red-400">{error.message}</p>
+        )}
+
         <PopoverContent
           className="z-100 w-auto overflow-hidden p-0"
           align="start"
         >
           <Calendar
             mode="single"
-            selected={date}
+            selected={value}
             captionLayout="dropdown"
             onSelect={(date) => {
-              setDate(date);
+              onChange(date);
               setOpen(false);
             }}
           />

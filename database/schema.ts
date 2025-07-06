@@ -14,6 +14,7 @@ export const userSchema = z.object({
 
 export const transactionSchema = z.object({
   _id: z.instanceof(ObjectId).default(() => new ObjectId()),
+  userId: z.instanceof(ObjectId),
   type: z.enum(["expense", "income"]),
   category: z.enum([
     "foodDining",
@@ -29,8 +30,9 @@ export const transactionSchema = z.object({
     "other",
   ]),
   amount: z.coerce.number().positive(),
-  date: z.coerce.date(),
   description: z.string().optional(),
+  createdAt: z.coerce.date().default(() => new Date()),
+  updatedAt: z.coerce.date().default(() => new Date()),
 });
 
 export type User = z.infer<typeof userSchema>;

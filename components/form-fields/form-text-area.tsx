@@ -23,7 +23,7 @@ export const FormTextArea = forwardRef<HTMLTextAreaElement, FormTextAreaProps>(
           </label>
         )}
         <TextArea id={id} ref={ref} maxHeight={maxHeight} {...restProps} />
-        {error && <p className="text-sm text-red-500">{error}</p>}
+        {error && <p className="text-sm text-red-400">{error}</p>}
       </div>
     );
   },

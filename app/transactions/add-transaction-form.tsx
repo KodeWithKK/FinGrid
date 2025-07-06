@@ -1,10 +1,20 @@
+"use client";
+
+import { useEffect } from "react";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { Wallet } from "lucide-react";
 import { useForm } from "react-hook-form";
 
-import Calendar22 from "@/components/calendar-22";
-import { FormInput, FormSelect, FormTextArea } from "@/components/form-fields";
+import {
+  FormCalendar,
+  FormInput,
+  FormSelect,
+  FormTextArea,
+} from "@/components/form-fields";
 import Modal from "@/components/modal";
 import { Button } from "@/components/ui/button";
+
+import { addTransactionFormSchema } from "./schema";
 
 interface AddTransactionFormProps {
   showModal: boolean;
@@ -12,7 +22,32 @@ interface AddTransactionFormProps {
 }
 
 function AddTransactionForm({ showModal, onClose }: AddTransactionFormProps) {
-  const { control } = useForm({});
+  const {
+    register,
+    control,
+    reset,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
+    resolver: zodResolver(addTransactionFormSchema),
+    defaultValues: {
+      type: "expense",
+      category: "foodDining",
+    },
+  });
+
+  useEffect(() => {
+    reset();
+  }, [showModal, reset]);
+
+  const onSubmit = handleSubmit(
+    (data) => {
+      console.log(data);
+    },
+    (error) => {
+      console.log(error);
+    },
+  );
 
   return (
     <Modal showModal={showModal} onClose={onClose} className="space-y-6">
@@ -31,11 +66,21 @@ function AddTransactionForm({ showModal, onClose }: AddTransactionFormProps) {
             options={{ expense: "Expense", income: "Income" }}
           />
 
-          <FormInput label="Amount" placeholder="0.00" />
+          <FormInput
+            {...register("amount")}
+            type="number"
+            label="Amount"
+            placeholder="0.00"
+            error={errors?.amount?.message}
+          />
         </div>
 
         <div className="flex gap-2 *:w-full">
-          <Calendar22 />
+          <FormCalendar
+            control={control}
+            registerName="createdAt"
+            label="Date"
+          />
           <FormSelect
             control={control}
             label="Category"
@@ -58,13 +103,15 @@ function AddTransactionForm({ showModal, onClose }: AddTransactionFormProps) {
         </div>
 
         <FormTextArea
-          label="Description"
+          {...register("description")}
+          label="Description (Optional)"
           maxHeight={100}
           placeholder="Enter transaction description..."
+          error={errors?.description?.message}
         />
       </div>
 
-      <Button size="lg" className="w-full">
+      <Button size="lg" className="w-full" onClick={onSubmit}>
         Add Transaction
       </Button>
     </Modal>
