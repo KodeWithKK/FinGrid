@@ -3,12 +3,14 @@ import * as z from "zod";
 export const addTransactionFormSchema = z.object({
   type: z.enum(["expense", "income"]),
   category: z.enum([
+    "salary",
+    "business",
+    "investments",
     "foodDining",
     "groceries",
     "transportation",
     "entertainment",
     "shopping",
-    "utilities",
     "healthcare",
     "travel",
     "education",

@@ -13,16 +13,22 @@ import {
 } from "@/components/form-fields";
 import Modal from "@/components/modal";
 import { Button } from "@/components/ui/button";
+import { Transaction } from "@/database/schema";
 import { transactionCategories } from "@/lib/constants";
 import { addTransactionFormSchema } from "@/schemas";
 import { addTransaction } from "@/services/transactions";
 
-interface AddTransactionFormProps {
+interface UpdateTransactionFormProps {
   showModal: boolean;
   onClose: () => void;
+  transaction: Transaction;
 }
 
-function AddTransactionForm({ showModal, onClose }: AddTransactionFormProps) {
+function UpdateTransactionForm({
+  showModal,
+  onClose,
+  transaction,
+}: UpdateTransactionFormProps) {
   const {
     register,
     control,
@@ -31,11 +37,7 @@ function AddTransactionForm({ showModal, onClose }: AddTransactionFormProps) {
     formState: { errors },
   } = useForm({
     resolver: zodResolver(addTransactionFormSchema),
-    defaultValues: {
-      type: "income",
-      category: "salary",
-      createdAt: new Date(),
-    },
+    defaultValues: transaction,
   });
 
   useEffect(() => {
@@ -56,7 +58,7 @@ function AddTransactionForm({ showModal, onClose }: AddTransactionFormProps) {
     <Modal showModal={showModal} onClose={onClose} className="space-y-6">
       <div className="flex items-center gap-3">
         <Wallet className="h-6" />
-        <h3 className="text-lg font-semibold">Add New Transaction</h3>
+        <h3 className="text-lg font-semibold">Update Transaction</h3>
       </div>
 
       <div className="space-y-4">
@@ -112,11 +114,11 @@ function AddTransactionForm({ showModal, onClose }: AddTransactionFormProps) {
           Cancel
         </Button>
         <Button size="lg" className="w-full" onClick={onSubmit}>
-          Add Transaction
+          Update Transaction
         </Button>
       </div>
     </Modal>
   );
 }
 
-export default AddTransactionForm;
+export default UpdateTransactionForm;

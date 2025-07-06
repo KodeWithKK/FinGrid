@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import dayjs from "dayjs";
 import { ChevronDownIcon } from "lucide-react";
 import { Control, FieldValues, Path, useController } from "react-hook-form";
 
@@ -39,13 +40,13 @@ export function FormCalendar<T extends FieldValues>({
             variant="outline"
             className="w-full justify-between font-normal"
           >
-            {value ? value.toLocaleDateString() : "Select date"}
+            {value ? dayjs(value).format("DD/MM/YYYY") : "Select date"}
             <ChevronDownIcon className="text-muted-foreground h-4" />
           </Button>
         </PopoverTrigger>
 
         {error?.message && (
-          <p className="text-sm text-red-400">{error.message}</p>
+          <p className="text-destructive text-sm">{error.message}</p>
         )}
 
         <PopoverContent
