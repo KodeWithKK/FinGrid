@@ -21,3 +21,5 @@ export const addTransactionFormSchema = z.object({
   createdAt: z.date({ message: "Date is required" }),
   description: z.string().optional(),
 });
+
+export type AddTransactionFormSchema = z.infer<typeof addTransactionFormSchema>;

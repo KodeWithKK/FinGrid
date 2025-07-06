@@ -13,8 +13,8 @@ import {
 } from "@/components/form-fields";
 import Modal from "@/components/modal";
 import { Button } from "@/components/ui/button";
-
-import { addTransactionFormSchema } from "./schema";
+import { addTransactionFormSchema } from "@/schemas";
+import { addTransaction } from "@/services/transactions";
 
 interface AddTransactionFormProps {
   showModal: boolean;
@@ -41,8 +41,9 @@ function AddTransactionForm({ showModal, onClose }: AddTransactionFormProps) {
   }, [showModal, reset]);
 
   const onSubmit = handleSubmit(
-    (data) => {
-      console.log(data);
+    async (data) => {
+      const insertedTransactionId = await addTransaction(data);
+      console.log(insertedTransactionId);
     },
     (error) => {
       console.log(error);

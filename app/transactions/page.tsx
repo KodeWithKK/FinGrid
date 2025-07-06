@@ -1,17 +1,26 @@
 "use client";
 
 import { useState } from "react";
+import { useQuery } from "@tanstack/react-query";
 import { Plus } from "lucide-react";
 import { useForm } from "react-hook-form";
 
 import { FormInput, FormSelect } from "@/components/form-fields";
 import { Button } from "@/components/ui/button";
+import { getTransactions } from "@/services/transactions";
 
 import AddTransactionForm from "./add-transaction-form";
 
 function TransitionsPage() {
   const [showTransactionsForm, setShowTransactionsForm] = useState(false);
   const { control } = useForm({});
+
+  const { data: transactions } = useQuery({
+    queryKey: ["transactions"],
+    queryFn: () => getTransactions(),
+  });
+
+  console.log(transactions);
 
   return (
     <div>

@@ -1,6 +1,7 @@
 import { ObjectId } from "mongodb";
 import * as z from "zod";
 
+/* DOCUMENT SCHEMAS */
 export const userSchema = z.object({
   _id: z.instanceof(ObjectId).default(() => new ObjectId()),
   email: z.string().email(),
@@ -35,5 +36,13 @@ export const transactionSchema = z.object({
   updatedAt: z.coerce.date().default(() => new Date()),
 });
 
-export type User = z.infer<typeof userSchema>;
-export type Transaction = z.infer<typeof transactionSchema>;
+/* DOCUMENT TYPES */
+export type UserDoc = z.infer<typeof userSchema>;
+export type TransactionDoc = z.infer<typeof transactionSchema>;
+
+/* SERIALIZED DOCUMENT TYPES */
+export type User = Omit<UserDoc, "_id"> & { _id: string };
+export type Transaction = Omit<TransactionDoc, "_id" | "userId"> & {
+  _id: string;
+  userId: string;
+};
