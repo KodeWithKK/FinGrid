@@ -56,7 +56,12 @@ export function FormCalendar<T extends FieldValues>({
           <Calendar
             mode="single"
             selected={value}
+            defaultMonth={value}
             captionLayout="dropdown"
+            classNames={{
+              years_dropdown: "bg-card text-foreground",
+              months_dropdown: "bg-card text-foreground",
+            }}
             onSelect={(date) => {
               onChange(date);
               setOpen(false);

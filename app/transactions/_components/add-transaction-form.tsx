@@ -62,15 +62,15 @@ function AddTransactionForm({ showModal, onClose }: AddTransactionFormProps) {
           ["transactions"],
           (prevTransactions) => {
             if (prevTransactions) {
-              return [
-                {
-                  ...data,
-                  _id: insertedTransactionId,
-                  updatedAt: new Date(),
-                  userId: testUserId,
-                },
-                ...prevTransactions,
-              ];
+              prevTransactions.push({
+                ...data,
+                _id: insertedTransactionId,
+                updatedAt: new Date(),
+                userId: testUserId,
+              });
+              return prevTransactions.sort(
+                (a, b) => b.createdAt.getTime() - a.createdAt.getTime(),
+              );
             }
           },
         );

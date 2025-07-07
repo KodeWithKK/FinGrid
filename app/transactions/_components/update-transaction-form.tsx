@@ -63,15 +63,17 @@ function UpdateTransactionForm({
           ["transactions"],
           (prevTransactions) => {
             if (prevTransactions) {
-              return prevTransactions.map((trx) =>
-                trx._id === transaction._id
-                  ? {
-                      ...trx,
-                      ...data,
-                      updatedAt: new Date(),
-                    }
-                  : trx,
-              );
+              return prevTransactions
+                .map((trx) =>
+                  trx._id === transaction._id
+                    ? {
+                        ...trx,
+                        ...data,
+                        updatedAt: new Date(),
+                      }
+                    : trx,
+                )
+                .sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime());
             }
             return prevTransactions;
           },

@@ -2,7 +2,8 @@
 
 import { useState } from "react";
 import { useQueryClient } from "@tanstack/react-query";
-import { SquarePen, Trash2 } from "lucide-react";
+import dayjs from "dayjs";
+import { CircleArrowUp, SquarePen, Trash2 } from "lucide-react";
 import { toast } from "sonner";
 
 import { IconLoader } from "@/components/icons";
@@ -44,15 +45,22 @@ function TransactionItem({ transaction }: { transaction: Transaction }) {
       />
 
       <div className="bg-card flex items-center gap-4 rounded-md px-3 py-2">
+        <CircleArrowUp
+          className={cn(
+            "text-primary h-6 w-6",
+            transaction.type === "expense" && "text-destructive",
+          )}
+        />
+
         <div className="flex-1 space-y-1">
           <p className="text-sm leading-none font-medium">
-            {transactionCategories[transaction.category]}
+            {transaction.description
+              ? transaction.description
+              : transactionCategories[transaction.category]}
           </p>
-          {transaction.description && (
-            <p className="text-muted-foreground text-sm italic">
-              Lunch at The Bistro
-            </p>
-          )}
+          <p className="text-muted-foreground text-xs">
+            <span>{dayjs(transaction.createdAt).format("DD MMM, YYYY")}</span>
+          </p>
         </div>
 
         <div className="flex flex-1 items-center justify-end gap-2">

@@ -39,7 +39,7 @@ function HomePage() {
           ]}
         />
         <PieChart
-          title="Category Wise Expenditure"
+          title="Avg Monthly Expenses Breakdown"
           nameKey="category"
           dataKey="expenditure"
           chartData={[

@@ -63,7 +63,7 @@ function TransitionsPage() {
         </div>
 
         <div className="space-y-4">
-          <h3 className="text-2xl font-medium">All Transactions</h3>
+          <h3 className="text-2xl font-medium">Transaction History</h3>
 
           {isTransactionsLoading && (
             <div className="flex items-center justify-center py-10">
