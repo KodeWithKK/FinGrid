@@ -10,8 +10,8 @@ import { Button } from "@/components/ui/button";
 import { useAppContext } from "@/contexts/app-provider";
 import { transactionCategories } from "@/lib/constants";
 
-import AddTransactionForm from "./add-transaction-form";
-import TransactionItem from "./transaction-item";
+import AddTransactionForm from "./_components/add-transaction-form";
+import TransactionItem from "./_components/transaction-item";
 
 function TransitionsPage() {
   const [showAddTransactionsForm, setShowAddTransactionsForm] = useState(false);
