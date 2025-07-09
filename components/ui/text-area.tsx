@@ -32,7 +32,7 @@ const TextArea = forwardRef<HTMLTextAreaElement, TextAreaProps>(
           maxHeight,
         )}px`;
       }
-    }, []);
+    }, [maxHeight]);
 
     return (
       <textarea
