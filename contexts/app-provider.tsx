@@ -1,16 +1,18 @@
 "use client";
 
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext, useLayoutEffect, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 
 import { Transaction } from "@/database/schema";
+import useIsMobile from "@/hooks/use-is-mobile";
 import { getTransactions } from "@/services/transactions";
 
 interface IAppContext {
-  isTransactionsLoading: boolean;
-  transactions: undefined | Transaction[];
+  isMobileBreakpoint: boolean;
   showSidebar: boolean;
   setShowSidebar: React.Dispatch<React.SetStateAction<boolean>>;
+  isTransactionsLoading: boolean;
+  transactions: undefined | Transaction[];
 }
 
 const AppContext = createContext<IAppContext | null>(null);
@@ -20,7 +22,14 @@ export const useAppContext = () => {
 };
 
 function AppProvider({ children }: { children: React.ReactNode }) {
-  const [showSidebar, setShowSidebar] = useState(true);
+  const isMobileBreakpoint = useIsMobile();
+  const [showSidebar, setShowSidebar] = useState(false);
+
+  useLayoutEffect(() => {
+    if (!isMobileBreakpoint) {
+      setShowSidebar(true);
+    }
+  }, [isMobileBreakpoint]);
 
   const { isLoading: isTransactionsLoading, data: transactions } = useQuery({
     queryKey: ["transactions"],
@@ -32,6 +41,7 @@ function AppProvider({ children }: { children: React.ReactNode }) {
       value={{
         showSidebar,
         setShowSidebar,
+        isMobileBreakpoint,
         isTransactionsLoading,
         transactions,
       }}
