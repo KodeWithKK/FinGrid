@@ -1,17 +1,14 @@
 import { Geist, Libre_Baskerville } from "next/font/google";
-import {
-  IndianRupee,
-  LayoutDashboard,
-  PanelLeftClose,
-  Target,
-} from "lucide-react";
 import type { Metadata } from "next";
 
-import { IconBrand } from "@/components/icons";
-import { NavItem } from "@/components/nav-item";
 import RootProvider from "@/contexts/root-provider";
 
+import NavBar from "./_components/nav-bar";
+import SideBar from "./_components/side-bar";
+
 import "./globals.css";
+
+import MainContainer from "./_components/main-container";
 
 const fontSans = Geist({
   variable: "--font-sans",
@@ -25,9 +22,9 @@ const fontSerif = Libre_Baskerville({
 });
 
 export const metadata: Metadata = {
-  title: "FinGrid | Personal Finance Management",
+  title: "Financiy | Personal Finance Management",
   description:
-    "Manage your personal finances with ease using FinGrid. Track income, expenses, and budgets.",
+    "Manage your personal finances with ease using Financiy. Track income, expenses, and budgets.",
   icons: "icon.svg",
 };
 
@@ -43,42 +40,10 @@ export default function RootLayout({
         suppressHydrationWarning
       >
         <RootProvider>
-          <aside className="fixed top-0 left-0 h-screen w-64 border-r p-5">
-            <div className="flex items-center gap-2">
-              <IconBrand className="text-primary h-6" />
-              <h3 className="text-lg font-semibold tracking-wider">FinGrid</h3>
-              <button
-                type="button"
-                className="ml-auto cursor-pointer text-gray-500"
-              >
-                <PanelLeftClose className="h-6" strokeWidth={1.5} />
-              </button>
-            </div>
+          <SideBar />
+          <NavBar />
 
-            <hr className="my-4" />
-
-            <div className="space-y-2">
-              <NavItem
-                title="Dashboard"
-                icon={<LayoutDashboard className="h-5" />}
-                href="/"
-              />
-              <NavItem
-                title="Transactions"
-                icon={<IndianRupee className="h-5" />}
-                href="/transactions"
-              />
-              <NavItem
-                title="Budget"
-                icon={<Target className="h-5" />}
-                href="/budget"
-              />
-            </div>
-          </aside>
-
-          <div className="pl-64">
-            <main className="p-6">{children}</main>
-          </div>
+          <MainContainer>{children}</MainContainer>
         </RootProvider>
       </body>
     </html>
