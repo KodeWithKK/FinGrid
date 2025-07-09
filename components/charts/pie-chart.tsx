@@ -44,8 +44,6 @@ export default function PieChart({
     {},
   ) satisfies ChartConfig;
 
-  console.log(chartConfig);
-
   const updatedChartData = chartData.map((curr) => ({
     ...curr,
     fill: `var(--color-${curr[nameKey]})`,

@@ -25,3 +25,26 @@ export const transactionFormschema = z.object({
 });
 
 export type TransactionFormSchema = z.infer<typeof transactionFormschema>;
+
+export const searchSchema = z.object({
+  query: z.string(),
+  type: z.enum(["all", "expense", "income"]),
+  category: z.enum([
+    "all",
+    "salary",
+    "business",
+    "investments",
+    "foodDining",
+    "groceries",
+    "transportation",
+    "entertainment",
+    "shopping",
+    "healthcare",
+    "travel",
+    "education",
+    "subscriptions",
+    "other",
+  ]),
+});
+
+export type SearchSchema = z.infer<typeof searchSchema>;
