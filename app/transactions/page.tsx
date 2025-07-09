@@ -76,7 +76,7 @@ function TransitionsPage() {
       />
 
       <div className="space-y-6">
-        <div className="flex items-center justify-between">
+        <div className="flex gap-4 max-sm:flex-col sm:items-center sm:justify-between">
           <div>
             <h2 className="font-serif text-3xl font-bold">Transactions</h2>
             <p className="text-muted-foreground mt-1">
@@ -85,7 +85,7 @@ function TransitionsPage() {
           </div>
           <Button
             size="lg"
-            className="pr-4 pl-3"
+            className="self-start pr-4 pl-3"
             onClick={() => setShowAddTransactionsForm(true)}
           >
             <Plus className="mr-0.5 h-4" />
@@ -93,7 +93,7 @@ function TransitionsPage() {
           </Button>
         </div>
 
-        <div className="flex gap-4">
+        <div className="flex gap-2 max-sm:flex-col sm:gap-4">
           <FormInput
             {...register("query")}
             placeholder="Search transactions..."

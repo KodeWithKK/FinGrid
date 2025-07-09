@@ -3,12 +3,11 @@ import type { Metadata } from "next";
 
 import RootProvider from "@/contexts/root-provider";
 
+import MainContainer from "./_components/main-container";
 import NavBar from "./_components/nav-bar";
 import SideBar from "./_components/side-bar";
 
 import "./globals.css";
-
-import MainContainer from "./_components/main-container";
 
 const fontSans = Geist({
   variable: "--font-sans",
@@ -22,9 +21,9 @@ const fontSerif = Libre_Baskerville({
 });
 
 export const metadata: Metadata = {
-  title: "Financiy | Personal Finance Management",
+  title: "Financify | Personal Finance Management",
   description:
-    "Manage your personal finances with ease using Financiy. Track income, expenses, and budgets.",
+    "Manage your personal finances with ease using Financify. Track income, expenses, and budgets.",
   icons: "icon.svg",
 };
 
@@ -42,7 +41,6 @@ export default function RootLayout({
         <RootProvider>
           <SideBar />
           <NavBar />
-
           <MainContainer>{children}</MainContainer>
         </RootProvider>
       </body>

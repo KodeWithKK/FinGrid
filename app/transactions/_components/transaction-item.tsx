@@ -44,7 +44,7 @@ function TransactionItem({ transaction }: { transaction: Transaction }) {
         transaction={transaction}
       />
 
-      <div className="bg-card flex items-center gap-4 rounded-md px-3 py-2">
+      <div className="bg-card flex items-center gap-4 rounded-md px-3 py-2 max-sm:pr-2">
         <CircleArrowUp
           className={cn(
             "text-primary h-6 w-6",
@@ -63,7 +63,7 @@ function TransactionItem({ transaction }: { transaction: Transaction }) {
           </p>
         </div>
 
-        <div className="flex flex-1 items-center justify-end gap-2">
+        <div className="flex flex-1 items-center justify-end sm:gap-2">
           <p
             className={cn(
               "text-primary shrink-0 px-2 font-medium",

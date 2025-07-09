@@ -42,7 +42,7 @@ function HomePage() {
         </p>
       </div>
 
-      <div className="flex gap-4">
+      <div className="grid grid-cols-1 gap-2 sm:grid-cols-2 lg:grid-cols-4 lg:gap-4">
         <MetricsCard
           title="Total Income"
           amount={metrics.totalIncome.thisMonth}
@@ -70,7 +70,7 @@ function HomePage() {
       </div>
 
       {!isTransactionsLoading && (
-        <div className="flex gap-4 *:w-full">
+        <div className="grid grid-cols-1 gap-4 *:w-full lg:grid-cols-2">
           <AreaChart
             title="Monthly Expenses"
             xAxisDataKey="month"

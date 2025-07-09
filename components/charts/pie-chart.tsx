@@ -55,7 +55,7 @@ export default function PieChart({
         <CardTitle className="text-xl">{title}</CardTitle>
         {description && <CardDescription>{description}</CardDescription>}
       </CardHeader>
-      <CardContent className="flex-1 px-[21%]">
+      <CardContent className="flex-1 px-[12%] md:px-[21%]">
         <ChartContainer
           config={chartConfig}
           className="[&_.recharts-text]:fill-background mx-auto aspect-square w-full"

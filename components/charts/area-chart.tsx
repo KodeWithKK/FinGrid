@@ -54,7 +54,7 @@ export default function AreaChart({
         <CardTitle className="text-xl">{title}</CardTitle>
         {description && <CardDescription>{description}</CardDescription>}
       </CardHeader>
-      <CardContent>
+      <CardContent className="max-md:pl-0">
         <ChartContainer config={chartConfig}>
           <RCAreaChart
             accessibilityLayer
