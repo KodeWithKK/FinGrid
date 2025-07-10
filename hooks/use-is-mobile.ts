@@ -2,8 +2,8 @@
 
 import { useEffect, useState } from "react";
 
-const useIsMobile = () => {
-  const [width, setWidth] = useState(0);
+const useIsMobile = (): boolean | null => {
+  const [width, setWidth] = useState<number | null>(null);
   const handleWindowSizeChange = () => {
     setWidth(window.innerWidth);
   };
@@ -17,7 +17,7 @@ const useIsMobile = () => {
     };
   }, []);
 
-  return width <= 768;
+  return width ? width <= 768 : null;
 };
 
 export default useIsMobile;

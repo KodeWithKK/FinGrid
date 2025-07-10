@@ -6,10 +6,15 @@ import AppProvider from "./app-provider";
 import ReactQueryProvider from "./react-query-provider";
 import ThemeProvider from "./theme-provider";
 
-function RootProvider({ children }: { children: React.ReactNode }) {
+interface RootProviderProps {
+  children: React.ReactNode;
+  isMobileSSR: boolean;
+}
+
+function RootProvider({ children, isMobileSSR }: RootProviderProps) {
   return (
     <ReactQueryProvider>
-      <AppProvider>
+      <AppProvider isMobileSSR={isMobileSSR}>
         <ThemeProvider
           attribute="class"
           defaultTheme="dark"

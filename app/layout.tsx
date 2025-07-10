@@ -1,7 +1,9 @@
 import { Geist, Libre_Baskerville } from "next/font/google";
+import { headers } from "next/headers";
 import type { Metadata } from "next";
 
 import RootProvider from "@/contexts/root-provider";
+import { cn } from "@/lib/utils";
 
 import MainContainer from "./_components/main-container";
 import NavBar from "./_components/nav-bar";
@@ -27,18 +29,26 @@ export const metadata: Metadata = {
   icons: "icon.svg",
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const headersList = await headers();
+  const userAgent = headersList.get("user-agent") || "";
+  const isMobile =
+    /Android|iPhone|iPad|iPod|Opera Mini|IEMobile|WPDesktop/i.test(userAgent);
+
   return (
     <html lang="en" suppressHydrationWarning>
       <body
-        className={`${fontSans.variable} ${fontSerif.variable} antialiased`}
+        className={cn(
+          `${fontSans.variable} ${fontSerif.variable} antialiased`,
+          isMobile ? "mobile" : "desktop",
+        )}
         suppressHydrationWarning
       >
-        <RootProvider>
+        <RootProvider isMobileSSR={isMobile}>
           <SideBar />
           <NavBar />
           <MainContainer>{children}</MainContainer>
