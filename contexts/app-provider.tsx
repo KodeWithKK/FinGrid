@@ -1,15 +1,16 @@
 "use client";
 
-import { createContext, useContext, useEffect, useState } from "react";
+import { createContext, useContext, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 
 import { Transaction } from "@/database/schema";
-import useIsMobile from "@/hooks/use-is-mobile";
 import { getTransactions } from "@/services/transactions";
 
 interface IAppContext {
-  showSidebar: boolean;
-  setShowSidebar: React.Dispatch<React.SetStateAction<boolean>>;
+  mobileShowSidebar: boolean;
+  setMobileShowSidebar: React.Dispatch<React.SetStateAction<boolean>>;
+  desktopShowSidebar: boolean;
+  setDesktopShowSidebar: React.Dispatch<React.SetStateAction<boolean>>;
   isTransactionsLoading: boolean;
   transactions: undefined | Transaction[];
 }
@@ -20,20 +21,9 @@ export const useAppContext = () => {
   return useContext(AppContext) as IAppContext;
 };
 
-interface AppProviderProps {
-  children: React.ReactNode;
-  isMobileSSR: boolean;
-}
-
-function AppProvider({ children, isMobileSSR }: AppProviderProps) {
-  const isMobileBreakpoint = useIsMobile();
-  const [showSidebar, setShowSidebar] = useState(!isMobileSSR);
-
-  useEffect(() => {
-    if (isMobileBreakpoint != null) {
-      setShowSidebar(!isMobileBreakpoint);
-    }
-  }, [isMobileBreakpoint]);
+function AppProvider({ children }: { children: React.ReactNode }) {
+  const [mobileShowSidebar, setMobileShowSidebar] = useState(false);
+  const [desktopShowSidebar, setDesktopShowSidebar] = useState(true);
 
   const { isLoading: isTransactionsLoading, data: transactions } = useQuery({
     queryKey: ["transactions"],
@@ -43,8 +33,10 @@ function AppProvider({ children, isMobileSSR }: AppProviderProps) {
   return (
     <AppContext.Provider
       value={{
-        showSidebar,
-        setShowSidebar,
+        mobileShowSidebar,
+        setMobileShowSidebar,
+        desktopShowSidebar,
+        setDesktopShowSidebar,
         isTransactionsLoading,
         transactions,
       }}

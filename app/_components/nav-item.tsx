@@ -3,18 +3,17 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
-import { useAppContext } from "@/contexts/app-provider";
 import { cn } from "@/lib/utils";
 
 interface NavItemProps {
   icon: React.ReactNode;
   title: string;
   href: string;
+  showSidebar: boolean;
 }
 
-export function NavItem({ icon, title, href }: NavItemProps) {
+export function NavItem({ icon, title, href, showSidebar }: NavItemProps) {
   const isActive = usePathname() === href;
-  const { showSidebar } = useAppContext();
 
   return (
     <Link

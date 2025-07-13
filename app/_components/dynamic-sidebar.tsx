@@ -12,11 +12,48 @@ import { IconBrand } from "@/components/icons";
 import { useAppContext } from "@/contexts/app-provider";
 import { cn } from "@/lib/utils";
 
+import NavBar from "./nav-bar";
 import { NavItem } from "./nav-item";
 
-function SideBar() {
-  const { showSidebar, setShowSidebar } = useAppContext();
+export default function DynamicSidebar() {
+  const {
+    mobileShowSidebar,
+    setMobileShowSidebar,
+    desktopShowSidebar,
+    setDesktopShowSidebar,
+  } = useAppContext();
 
+  return (
+    <>
+      {mobileShowSidebar && (
+        <div className="fixed left-0 z-25 h-screen w-full backdrop-blur-md md:hidden"></div>
+      )}
+
+      <NavBar onOpen={() => setMobileShowSidebar(true)} />
+
+      <div className="md:hidden">
+        <Sidebar
+          showSidebar={mobileShowSidebar}
+          setShowSidebar={setMobileShowSidebar}
+        />
+      </div>
+
+      <div className="max-md:hidden">
+        <Sidebar
+          showSidebar={desktopShowSidebar}
+          setShowSidebar={setDesktopShowSidebar}
+        />
+      </div>
+    </>
+  );
+}
+
+interface SidebarProps {
+  showSidebar: boolean;
+  setShowSidebar: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+function Sidebar({ showSidebar, setShowSidebar }: SidebarProps) {
   return (
     <div className="flex">
       <aside
@@ -54,19 +91,22 @@ function SideBar() {
 
         <div className="space-y-2">
           <NavItem
+            href="/"
             title="Dashboard"
             icon={<LayoutDashboard className="h-5" />}
-            href="/"
+            showSidebar={showSidebar}
           />
           <NavItem
+            href="/transactions"
             title="Transactions"
             icon={<IndianRupee className="h-5" />}
-            href="/transactions"
+            showSidebar={showSidebar}
           />
           <NavItem
+            href="/budget"
             title="Budget"
             icon={<Target className="h-5" />}
-            href="/budget"
+            showSidebar={showSidebar}
           />
         </div>
 
@@ -84,11 +124,6 @@ function SideBar() {
           />
         </button>
       </aside>
-      {showSidebar && (
-        <div className="fixed left-0 z-25 h-screen w-full backdrop-blur-md md:hidden"></div>
-      )}
     </div>
   );
 }
-
-export default SideBar;

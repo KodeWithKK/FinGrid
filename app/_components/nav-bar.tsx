@@ -4,21 +4,22 @@ import Link from "next/link";
 import { PanelLeftClose } from "lucide-react";
 
 import { IconBrand } from "@/components/icons";
-import { useAppContext } from "@/contexts/app-provider";
 import { cn } from "@/lib/utils";
 
-function NavBar() {
-  const { showSidebar, setShowSidebar } = useAppContext();
+interface NavBarProps {
+  onOpen: () => void;
+}
 
+function NavBar({ onOpen }: NavBarProps) {
   return (
     <div className="sticky top-0 left-0 z-20 flex h-16 items-center border-b backdrop-blur-md md:hidden">
       <button
         type="button"
         className="z-20 ml-6 cursor-pointer text-gray-500"
-        onClick={() => setShowSidebar(true)}
+        onClick={onOpen}
       >
         <PanelLeftClose
-          className={cn("h-6 scale-120 rotate-180", showSidebar && "hidden")}
+          className={cn("h-6 scale-120 rotate-180")}
           strokeWidth={1.5}
         />
       </button>
