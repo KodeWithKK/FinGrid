@@ -55,6 +55,8 @@ function AddTransactionForm({ showModal, onClose }: AddTransactionFormProps) {
       const insertedTransactionId = await addTransaction(data);
       setIsAdding(false);
 
+      console.log({ insertedTransactionId });
+
       if (insertedTransactionId) {
         toast.success("Transaction added successfully.");
 
@@ -68,7 +70,9 @@ function AddTransactionForm({ showModal, onClose }: AddTransactionFormProps) {
                 updatedAt: new Date(),
                 userId: testUserId,
               });
-              return prevTransactions.sort(
+
+              console.log({ prevTransactions });
+              return prevTransactions.toSorted(
                 (a, b) => b.createdAt.getTime() - a.createdAt.getTime(),
               );
             }

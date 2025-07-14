@@ -1,6 +1,8 @@
 import { ObjectId } from "mongodb";
 import * as z from "zod";
 
+import { TRANSACTION_CATEGORIES } from "../lib/constants";
+
 /* DOCUMENT SCHEMAS */
 export const userSchema = z.object({
   _id: z.instanceof(ObjectId).default(() => new ObjectId()),
@@ -13,27 +15,23 @@ export const userSchema = z.object({
   updatedAt: z.coerce.date().default(() => new Date()),
 });
 
-export const transactionSchema = z.object({
+const transactionSchema = z.object({
   _id: z.instanceof(ObjectId).default(() => new ObjectId()),
   userId: z.instanceof(ObjectId),
   type: z.enum(["expense", "income"]),
-  category: z.enum([
-    "salary",
-    "business",
-    "investments",
-    "foodDining",
-    "groceries",
-    "transportation",
-    "entertainment",
-    "shopping",
-    "healthcare",
-    "travel",
-    "education",
-    "subscriptions",
-    "other",
-  ]),
+  category: z.enum(TRANSACTION_CATEGORIES),
   amount: z.coerce.number().positive(),
   description: z.string().optional(),
+  createdAt: z.coerce.date().default(() => new Date()),
+  updatedAt: z.coerce.date().default(() => new Date()),
+});
+export default transactionSchema;
+
+export const budgetSchema = z.object({
+  _id: z.instanceof(ObjectId).default(() => new ObjectId()),
+  userId: z.instanceof(ObjectId),
+  category: z.enum(TRANSACTION_CATEGORIES),
+  amount: z.coerce.number().positive(),
   createdAt: z.coerce.date().default(() => new Date()),
   updatedAt: z.coerce.date().default(() => new Date()),
 });

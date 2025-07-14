@@ -19,7 +19,10 @@ function Modal({ showModal, onClose, children, className }: ModalProps) {
   return (
     <ReactRemoveScroll>
       <ReactFocusLock returnFocus={true}>
-        <div className="scroller fixed top-0 left-0 z-[100] grid h-screen w-full place-items-center overflow-y-auto p-6 backdrop-blur-md">
+        <div
+          className="scroller fixed top-0 left-0 z-[100] grid h-screen w-full place-items-center overflow-y-auto p-6 backdrop-blur-md"
+          style={{ height: "100dvh" }}
+        >
           <motion.div
             animate={{ scale: [0.6, 1], opacity: [0.6, 1] }}
             className={cn(

@@ -14,4 +14,13 @@ export const transactionCategories = {
   education: "Education",
   subscriptions: "Subscriptions",
   other: "Other",
-};
+} as const;
+
+type TransactionCategoryKeys = keyof typeof transactionCategories;
+
+export const TRANSACTION_CATEGORIES = Object.keys(
+  transactionCategories,
+) as unknown as readonly [
+  TransactionCategoryKeys,
+  ...TransactionCategoryKeys[],
+];

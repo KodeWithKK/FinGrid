@@ -26,9 +26,9 @@ function TransactionItem({ transaction }: { transaction: Transaction }) {
     setIsDeleting(false);
 
     if (isDeleted) {
-      queryClient.setQueryData<Transaction[]>(["transactions"], (prev) => {
-        return prev ? prev.filter((t) => t._id !== transaction._id) : prev;
-      });
+      queryClient.setQueryData<Transaction[]>(["transactions"], (prev) =>
+        prev ? prev.filter((t) => t._id !== transaction._id) : prev,
+      );
 
       toast.success("Transaction deleted successfully.");
     } else {

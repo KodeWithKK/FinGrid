@@ -73,7 +73,9 @@ function UpdateTransactionForm({
                       }
                     : trx,
                 )
-                .sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime());
+                .toSorted(
+                  (a, b) => b.createdAt.getTime() - a.createdAt.getTime(),
+                );
             }
             return prevTransactions;
           },

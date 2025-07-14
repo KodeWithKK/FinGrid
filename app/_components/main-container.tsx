@@ -13,7 +13,7 @@ function MainContainer({ children }: { children: React.ReactNode }) {
         !desktopShowSidebar && "md:pl-20",
       )}
     >
-      <main className="px-4 py-6 md:px-6">{children}</main>
+      <main className="relative px-4 py-6 md:px-6">{children}</main>
     </div>
   );
 }

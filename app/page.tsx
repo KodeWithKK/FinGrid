@@ -12,7 +12,8 @@ import {
 
 import AreaChart from "@/components/charts/area-chart";
 import PieChart from "@/components/charts/pie-chart";
-import { IconLoader2 } from "@/components/icons";
+import LoadingScreen from "@/components/loading-screen";
+import SummaryCard from "@/components/summary-card";
 import { useAppContext } from "@/contexts/app-provider";
 import { transactionCategories } from "@/lib/constants";
 import {
@@ -23,8 +24,6 @@ import {
 } from "@/lib/transaction-utils";
 import { cn } from "@/lib/utils";
 
-import MetricsCard from "./_components/metrics-card";
-
 function HomePage() {
   const { isTransactionsLoading, transactions } = useAppContext();
 
@@ -34,12 +33,7 @@ function HomePage() {
   );
 
   if (isTransactionsLoading) {
-    return (
-      <div className="flex h-screen w-full flex-col items-center justify-center gap-2">
-        <IconLoader2 className="h-8 animate-spin" />
-        <span className="text-muted-foreground text-lg">Loading...</span>
-      </div>
-    );
+    return <LoadingScreen />;
   }
 
   return (
@@ -52,25 +46,25 @@ function HomePage() {
       </div>
 
       <div className="grid grid-cols-1 gap-2 sm:grid-cols-2 lg:grid-cols-4 lg:gap-4">
-        <MetricsCard
+        <SummaryCard
           title="Total Income"
           amount={metrics.totalIncome.thisMonth}
           percentage={metrics.totalIncome.changeInPercentage}
           Icon={IndianRupee}
         />
-        <MetricsCard
+        <SummaryCard
           title="Total Expenses"
           amount={metrics.totalExpense.thisMonth}
           percentage={metrics.totalExpense.changeInPercentage}
           Icon={CreditCard}
         />
-        <MetricsCard
+        <SummaryCard
           title="Net Balance"
           amount={metrics.netBalance.thisMonth}
           percentage={metrics.netBalance.changeInPercentage}
           Icon={TrendingUp}
         />
-        <MetricsCard
+        <SummaryCard
           title="Budget Left"
           amount={metrics.budgetLeft.thisMonth}
           percentage={metrics.budgetLeft.changeInPercentage}

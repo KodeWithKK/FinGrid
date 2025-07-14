@@ -3,14 +3,14 @@ import { TrendingUp } from "lucide-react";
 import { IconProps } from "@/components/icons";
 import { cn } from "@/lib/utils";
 
-interface MetricsCard {
+interface SummaryCard {
   title: string;
   amount: number;
   percentage: number;
   Icon: React.FC<IconProps>;
 }
 
-function MetricsCard({ title, amount, percentage, Icon }: MetricsCard) {
+function SummaryCard({ title, amount, percentage, Icon }: SummaryCard) {
   return (
     <div className="bg-card border-border/60 hover:border-border w-full space-y-2 rounded-md border p-6 transition-colors">
       <div className="flex items-center justify-between">
@@ -43,4 +43,4 @@ function MetricsCard({ title, amount, percentage, Icon }: MetricsCard) {
   );
 }
 
-export default MetricsCard;
+export default SummaryCard;

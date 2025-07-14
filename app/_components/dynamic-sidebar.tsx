@@ -62,6 +62,7 @@ function Sidebar({ showSidebar, setShowSidebar }: SidebarProps) {
           showSidebar && "left-0",
           !showSidebar && "px-3 md:w-20",
         )}
+        style={{ height: "100dvh" }}
       >
         <div className="flex justify-center">
           <Link href="/" className="flex h-[28px] items-center gap-2.5">

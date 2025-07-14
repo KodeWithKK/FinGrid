@@ -3,7 +3,7 @@
 import { ObjectId } from "mongodb";
 
 import { dbCollections } from "@/database/collections";
-import { transactionSchema, type Transaction } from "@/database/schema";
+import transactionSchema, { type Transaction } from "@/database/schema";
 import { testUserId } from "@/lib/constants";
 import { transactionFormschema, type TransactionFormSchema } from "@/schemas";
 

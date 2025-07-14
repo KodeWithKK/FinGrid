@@ -6,7 +6,7 @@ import { Plus } from "lucide-react";
 import { useForm } from "react-hook-form";
 
 import { FormInput, FormSelect } from "@/components/form-fields";
-import { IconLoader2 } from "@/components/icons";
+import LoadingScreen from "@/components/loading-screen";
 import { Button } from "@/components/ui/button";
 import { useAppContext } from "@/contexts/app-provider";
 import { Transaction } from "@/database/schema";
@@ -60,12 +60,7 @@ function TransitionsPage() {
   }, [transactions, searchQuery, seatchType, searchCategory]);
 
   if (isTransactionsLoading) {
-    return (
-      <div className="flex h-screen w-full flex-col items-center justify-center gap-2">
-        <IconLoader2 className="h-8 animate-spin" />
-        <span className="text-muted-foreground text-lg">Loading...</span>
-      </div>
-    );
+    return <LoadingScreen />;
   }
 
   return (
