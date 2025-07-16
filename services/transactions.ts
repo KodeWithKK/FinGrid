@@ -3,9 +3,9 @@
 import { ObjectId } from "mongodb";
 
 import { dbCollections } from "@/database/collections";
-import transactionSchema, { type Transaction } from "@/database/schema";
+import { transactionSchema, type Transaction } from "@/database/schema";
 import { testUserId } from "@/lib/constants";
-import { transactionFormschema, type TransactionFormSchema } from "@/schemas";
+import { transactionFormSchema, type TransactionFormSchema } from "@/schemas";
 
 export async function getTransactions(): Promise<Transaction[]> {
   const transactions = await dbCollections.transactions();
@@ -43,7 +43,7 @@ export async function updateTransaction(
 ): Promise<boolean> {
   try {
     const transactions = await dbCollections.transactions();
-    const { data, success } = transactionFormschema.safeParse(transaction);
+    const { data, success } = transactionFormSchema.safeParse(transaction);
     if (!success) return false;
     await transactions.updateOne(
       { _id: new ObjectId(id) },

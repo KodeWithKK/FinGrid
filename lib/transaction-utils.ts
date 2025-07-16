@@ -93,7 +93,8 @@ export const getAvgTransactionBreakdown = (
 
 export const getTransactionMetrics = (
   transactions: Transaction[],
-  budget: number,
+  thisMonthBudget: number,
+  prevMonthBudget: number,
 ) => {
   const transactionsByMonth = getTransactionByMonth(transactions);
   const thisMonthTransaction =
@@ -150,9 +151,11 @@ export const getTransactionMetrics = (
         100,
     },
     budgetLeft: {
-      thisMonth: budget - thisMonthExpense,
+      thisMonth: thisMonthBudget - thisMonthExpense,
       changeInPercentage:
-        ((budget - thisMonthExpense - (budget - prevMonthExpense)) /
+        ((thisMonthBudget -
+          thisMonthExpense -
+          (prevMonthBudget - prevMonthExpense)) /
           prevMonthExpense) *
         100,
     },

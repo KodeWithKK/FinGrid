@@ -3,16 +3,19 @@
 import { createContext, useContext, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 
-import { Transaction } from "@/database/schema";
+import { Budget, Transaction } from "@/database/schema";
+import { getBudgets } from "@/services/budget";
 import { getTransactions } from "@/services/transactions";
 
 interface IAppContext {
   mobileShowSidebar: boolean;
-  setMobileShowSidebar: React.Dispatch<React.SetStateAction<boolean>>;
   desktopShowSidebar: boolean;
+  setMobileShowSidebar: React.Dispatch<React.SetStateAction<boolean>>;
   setDesktopShowSidebar: React.Dispatch<React.SetStateAction<boolean>>;
   isTransactionsLoading: boolean;
   transactions: undefined | Transaction[];
+  isBudgetsLoading: boolean;
+  budgets: undefined | Budget[];
 }
 
 const AppContext = createContext<IAppContext | null>(null);
@@ -30,15 +33,22 @@ function AppProvider({ children }: { children: React.ReactNode }) {
     queryFn: () => getTransactions(),
   });
 
+  const { isLoading: isBudgetsLoading, data: budgets } = useQuery({
+    queryKey: ["budgets"],
+    queryFn: () => getBudgets(),
+  });
+
   return (
     <AppContext.Provider
       value={{
         mobileShowSidebar,
-        setMobileShowSidebar,
         desktopShowSidebar,
+        setMobileShowSidebar,
         setDesktopShowSidebar,
         isTransactionsLoading,
         transactions,
+        isBudgetsLoading,
+        budgets,
       }}
     >
       {children}

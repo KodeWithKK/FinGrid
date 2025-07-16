@@ -18,7 +18,7 @@ import Modal from "@/components/modal";
 import { Button } from "@/components/ui/button";
 import { Transaction } from "@/database/schema";
 import { testUserId, transactionCategories } from "@/lib/constants";
-import { transactionFormschema } from "@/schemas";
+import { transactionFormSchema } from "@/schemas";
 import { addTransaction } from "@/services/transactions";
 
 interface AddTransactionFormProps {
@@ -37,7 +37,7 @@ function AddTransactionForm({ showModal, onClose }: AddTransactionFormProps) {
     handleSubmit,
     formState: { errors },
   } = useForm({
-    resolver: zodResolver(transactionFormschema),
+    resolver: zodResolver(transactionFormSchema),
     defaultValues: {
       type: "income",
       category: "salary",
@@ -55,8 +55,6 @@ function AddTransactionForm({ showModal, onClose }: AddTransactionFormProps) {
       const insertedTransactionId = await addTransaction(data);
       setIsAdding(false);
 
-      console.log({ insertedTransactionId });
-
       if (insertedTransactionId) {
         toast.success("Transaction added successfully.");
 
@@ -71,7 +69,6 @@ function AddTransactionForm({ showModal, onClose }: AddTransactionFormProps) {
                 userId: testUserId,
               });
 
-              console.log({ prevTransactions });
               return prevTransactions.toSorted(
                 (a, b) => b.createdAt.getTime() - a.createdAt.getTime(),
               );

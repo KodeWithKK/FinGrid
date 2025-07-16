@@ -15,6 +15,7 @@ import PieChart from "@/components/charts/pie-chart";
 import LoadingScreen from "@/components/loading-screen";
 import SummaryCard from "@/components/summary-card";
 import { useAppContext } from "@/contexts/app-provider";
+import { getBudgetByMonth } from "@/lib/budget-utils";
 import { transactionCategories } from "@/lib/constants";
 import {
   getAvgTransactionBreakdown,
@@ -25,14 +26,20 @@ import {
 import { cn } from "@/lib/utils";
 
 function HomePage() {
-  const { isTransactionsLoading, transactions } = useAppContext();
+  const { isTransactionsLoading, isBudgetsLoading, transactions, budgets } =
+    useAppContext();
 
   const metrics = useMemo(
-    () => getTransactionMetrics(transactions || [], 32000),
-    [transactions],
+    () =>
+      getTransactionMetrics(
+        transactions || [],
+        getBudgetByMonth(budgets || [], dayjs().month(), dayjs().year()),
+        32000,
+      ),
+    [transactions, budgets],
   );
 
-  if (isTransactionsLoading) {
+  if (isTransactionsLoading || isBudgetsLoading) {
     return <LoadingScreen />;
   }
 

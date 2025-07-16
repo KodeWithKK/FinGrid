@@ -1,6 +1,7 @@
 import { TrendingUp } from "lucide-react";
 
 import { IconProps } from "@/components/icons";
+import { formatPrice } from "@/lib/format-price";
 import { cn } from "@/lib/utils";
 
 interface SummaryCard {
@@ -20,12 +21,7 @@ function SummaryCard({ title, amount, percentage, Icon }: SummaryCard) {
         <Icon className="text-muted-foreground h-4" />
       </div>
 
-      <h2 className="text-2xl font-semibold">
-        ₹{" "}
-        {new Intl.NumberFormat("en-IN", { maximumSignificantDigits: 3 }).format(
-          amount,
-        )}
-      </h2>
+      <h2 className="text-2xl font-semibold">{formatPrice(amount)}</h2>
       <div
         className={cn(
           "text-primary flex items-center text-xs",

@@ -10,6 +10,7 @@ import { IconLoader } from "@/components/icons";
 import { Button } from "@/components/ui/button";
 import { Transaction } from "@/database/schema";
 import { transactionCategories } from "@/lib/constants";
+import { formatPrice } from "@/lib/format-price";
 import { cn } from "@/lib/utils";
 import { deleteTransaction } from "@/services/transactions";
 
@@ -70,8 +71,8 @@ function TransactionItem({ transaction }: { transaction: Transaction }) {
               transaction.type === "expense" && "text-destructive",
             )}
           >
-            {transaction.type === "expense" ? "-" : "+"}
-            {" ₹ " + transaction.amount}
+            {transaction.type === "expense" ? "- " : "+ "}
+            {formatPrice(transaction.amount)}
           </p>
           <Button
             variant="ghost"

@@ -18,7 +18,7 @@ import Modal from "@/components/modal";
 import { Button } from "@/components/ui/button";
 import { Transaction } from "@/database/schema";
 import { transactionCategories } from "@/lib/constants";
-import { transactionFormschema } from "@/schemas";
+import { transactionFormSchema } from "@/schemas";
 import { updateTransaction } from "@/services/transactions";
 
 interface UpdateTransactionFormProps {
@@ -42,7 +42,7 @@ function UpdateTransactionForm({
     handleSubmit,
     formState: { errors },
   } = useForm({
-    resolver: zodResolver(transactionFormschema),
+    resolver: zodResolver(transactionFormSchema),
     defaultValues: transaction,
   });
 
