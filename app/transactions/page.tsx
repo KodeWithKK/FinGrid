@@ -116,6 +116,9 @@ function TransitionsPage() {
           </h3>
 
           <div className="space-y-2">
+            {filteredTransactions?.length === 0 && (
+              <p className="text-muted-foreground">No transactions found</p>
+            )}
             {filteredTransactions?.map((transaction) => (
               <TransactionItem
                 key={transaction._id}

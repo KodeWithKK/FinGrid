@@ -1,16 +1,9 @@
 "use client";
 
 import { useState } from "react";
-import {
-  CreditCard,
-  IndianRupee,
-  Plus,
-  Target,
-  TrendingUp,
-} from "lucide-react";
+import { Plus } from "lucide-react";
 
 import LoadingScreen from "@/components/loading-screen";
-import SummaryCard from "@/components/summary-card";
 import { Button } from "@/components/ui/button";
 import { useAppContext } from "@/contexts/app-provider";
 
@@ -79,6 +72,9 @@ function BudgetPage() {
           <h3 className="font-serif text-2xl font-medium">Budget History</h3>
 
           <div className="space-y-2">
+            {budgets?.length === 0 && (
+              <p className="text-muted-foreground">No Budgets found</p>
+            )}
             {budgets?.map((budget) => (
               <BudgetItem key={budget._id} budget={budget} />
             ))}
